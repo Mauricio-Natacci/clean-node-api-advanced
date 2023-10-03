@@ -1,0 +1,19 @@
+{
+	"name": "clean-node-api-advanced",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"scripts": {
+		"build": "rimraf ./dist && echo 'dist was deleted 😎' && tsc",
+		"start": "node dist/main/api"
+	},
+	"devDependencies": {
+		"@types/module-alias": "2.0.2",
+		"@types/node": "20.8.2",
+		"typescript": "5.2.2"
+	},
+	"dependencies": {
+		"module-alias": "2.2.3",
+		"rimraf": "5.0.5"
+	}
+}
