@@ -8,6 +8,7 @@
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"esModuleInterop": true,
+		"strictNullChecks": true,
 		"baseUrl": "src",
 		"paths": {
 			"@/*": ["*"],
