@@ -1,26 +1,31 @@
 {
-	"name": "clean-node-api-advanced",
-	"version": "1.0.0",
-	"main": "index.js",
-	"license": "MIT",
-	"scripts": {
-		"build": "rimraf ./dist && echo 'dist was deleted 😎' && tsc -p tsconfig-build.json",
-		"start": "node dist/main/api",
-		"lint": "eslint 'src/**' --fix && echo \"ESlint: No errors found. 🚀 \""
-	},
-	"devDependencies": {
-		"@types/module-alias": "2.0.2",
-		"@types/node": "20.8.2",
-		"@typescript-eslint/eslint-plugin": "6.4.0",
-		"eslint": "8.0.1",
-		"eslint-config-standard-with-typescript": "39.0.0",
-		"eslint-plugin-import": "2.25.2",
-		"eslint-plugin-n": "15.0.0",
-		"eslint-plugin-promise": "6.0.0",
-		"typescript": "5.2.2"
-	},
-	"dependencies": {
-		"module-alias": "2.2.3",
-		"rimraf": "5.0.5"
-	}
+  "name": "clean-node-api-advanced",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "rimraf ./dist && echo 'dist was deleted 😎' && tsc -p tsconfig-build.json",
+    "start": "node dist/main/api",
+    "lint": "eslint 'src/**' --fix && echo \"ESlint: No errors found. 🚀 \"",
+    "test": "jest --passWithNoTests --no-cache --runInBand",
+    "test:watch": "yarn test --watch"
+  },
+  "devDependencies": {
+    "@types/jest": "29.5.5",
+    "@types/module-alias": "2.0.2",
+    "@types/node": "20.8.2",
+    "@typescript-eslint/eslint-plugin": "6.4.0",
+    "eslint": "8.0.1",
+    "eslint-config-standard-with-typescript": "39.0.0",
+    "eslint-plugin-import": "2.25.2",
+    "eslint-plugin-n": "15.0.0",
+    "eslint-plugin-promise": "6.0.0",
+    "jest": "29.7.0",
+    "ts-jest": "29.1.1",
+    "typescript": "5.2.2"
+  },
+  "dependencies": {
+    "module-alias": "2.2.3",
+    "rimraf": "5.0.5"
+  }
 }

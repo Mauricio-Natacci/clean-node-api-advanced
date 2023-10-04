@@ -1,20 +1,19 @@
 {
 	"compilerOptions": {
-		"outDir": "dist",
-		"rootDir": "src",
-		"target": "es2022",
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"module": "commonjs",
-		"moduleResolution": "node",
-		"esModuleInterop": true,
-		"strictNullChecks": true,
-		"baseUrl": "src",
-		"paths": {
-			"@/*": ["*"],
-			"@/tests/*": ["../tests/*"],
-		},
-	},
-	"strict": true,
-	"include": ["src"]
+			"outDir": "dist",
+			"module": "commonjs",
+			"target": "es2019",
+			"lib": ["es2020", "esnext"],
+			"esModuleInterop": true,
+			"strict": true,
+			"sourceMap": true,
+			"rootDirs": ["src", "tests"],
+			"baseUrl": "./",
+			"paths": {
+				"@src/*": ["src/*"],
+				"@tests/*": ["tests/*"],
+			},
+			"useUnknownInCatchVariables": false,
+			},
+		"include": [ "src", "tests" ],
 }
