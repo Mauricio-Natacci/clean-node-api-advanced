@@ -8,10 +8,10 @@
 			"strict": true,
 			"sourceMap": true,
 			"rootDirs": ["src", "tests"],
-			"baseUrl": "./",
+			"baseUrl": "src",
 			"paths": {
-				"@src/*": ["src/*"],
-				"@tests/*": ["tests/*"],
+				"@/*": ["*"],
+				"@/tests/*": ["../tests/*"]
 			},
 			"useUnknownInCatchVariables": false,
 			},
