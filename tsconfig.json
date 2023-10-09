@@ -9,6 +9,8 @@
 			"sourceMap": true,
 			"rootDirs": ["src", "tests"],
 			"baseUrl": "src",
+			"emitDecoratorMetadata": true,
+			"experimentalDecorators": true,
 			"paths": {
 				"@/*": ["*"],
 				"@/tests/*": ["../tests/*"]
