@@ -1,6 +1,6 @@
 import { LoadUserAccountRepository } from '@/data/contracts/repos'
 import { newDb } from 'pg-mem'
-import { Column, Entity, PrimaryGeneratedColumn, getRepository } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn, Repository, getConnection, getRepository } from 'typeorm'
 
 class PgUserAccountRepository implements LoadUserAccountRepository {
   async load (params: LoadUserAccountRepository.Params): Promise<LoadUserAccountRepository.Result> {
@@ -33,38 +33,42 @@ class PgUser {
 
 describe('PgUserAccountRepository', () => {
   describe('load', () => {
-    it('should return an account if email exists', async () => {
+    let sut: PgUserAccountRepository
+    let pgUserRepo: Repository<PgUser>
+
+    beforeAll(async () => {
       const db = newDb()
       const connection = await db.adapters.createTypeormConnection({
         type: 'postgres',
         entities: [PgUser]
       })
 
+      db.backup()
+
       await connection.synchronize()
-      const pgUserRepo = getRepository(PgUser)
+      pgUserRepo = getRepository(PgUser)
+    })
+
+    afterAll(async () => {
+      await getConnection().close()
+    })
+
+    beforeEach(() => {
+      sut = new PgUserAccountRepository()
+    })
+
+    it('should return an account if email exists', async () => {
       await pgUserRepo.save({ email: 'existing_email' })
 
-      const sut = new PgUserAccountRepository()
       const account = await sut.load({ email: 'existing_email' })
 
       expect(account).toEqual({ id: '1' })
-      await connection.close()
     })
 
     it('should return undefined if email does not exist', async () => {
-      const db = newDb()
-      const connection = await db.adapters.createTypeormConnection({
-        type: 'postgres',
-        entities: [PgUser]
-      })
-
-      await connection.synchronize()
-
-      const sut = new PgUserAccountRepository()
       const account = await sut.load({ email: 'new_email' })
 
       expect(account).toBeUndefined()
-      await connection.close()
     })
   })
 })
