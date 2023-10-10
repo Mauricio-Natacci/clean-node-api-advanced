@@ -9,6 +9,7 @@
     "lint": "eslint 'src/**' --fix && echo \"ESlint: No errors found. 🚀 \"",
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "yarn test --watch",
+    "test:fb-api": "yarn test -c ./jest.integration.config.js ./tests/external/facebook-api.test.ts",
     "test:staged": "yarn test --findRelatedTests",
     "prepare": "husky install"
   },
