@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "rimraf ./dist && echo 'dist was deleted 😎' && tsc -p tsconfig-build.json",
-    "start": "node dist/main/api",
+    "start": "node dist/main",
     "lint": "eslint 'src/**' --fix && echo \"ESlint: No errors found. 🚀 \"",
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "yarn test --watch",
@@ -15,6 +15,8 @@
   },
   "devDependencies": {
     "@types/axios": "0.14.0",
+    "@types/cors": "2.8.14",
+    "@types/express": "4.17.19",
     "@types/jest": "29.5.5",
     "@types/jsonwebtoken": "9.0.3",
     "@types/module-alias": "2.0.2",
@@ -35,7 +37,9 @@
   },
   "dependencies": {
     "axios": "1.5.1",
+    "cors": "2.8.5",
     "dotenv": "16.3.1",
+    "express": "4.18.2",
     "jsonwebtoken": "9.0.2",
     "module-alias": "2.2.3",
     "pg": "8.7.1",

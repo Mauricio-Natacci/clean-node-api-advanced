@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export const env = {
+  port: process.env.PORT,
   facebookApi: {
     clientId: process.env.FB_CLIENT_ID,
     clientSecret: process.env.FB_CLIENT_SECRET,
