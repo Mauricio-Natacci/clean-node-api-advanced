@@ -3,7 +3,7 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": ["jest.config.js", "jest.integration.config.js"],
+  "ignorePatterns": ["jest.config.js", "jest.integration.config.js", "ormconfig.js"],
   "rules": {
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/no-namespace": "off",
