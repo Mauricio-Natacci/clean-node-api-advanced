@@ -12,5 +12,12 @@ export const env = {
     fb_id: process.env.FB_ID,
     fb_name: process.env.FB_NAME,
     fb_email: process.env.FB_EMAIL
+  },
+  connection: {
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    username: process.env.POSTGRES_USER,
+    database: process.env.POSTGRES_DB,
+    password: process.env.POSTGRES_PASSWORD
   }
 }
