@@ -13,16 +13,19 @@ describe('ExpressRouter', () => {
   let controller: MockProxy<Controller>
   let sut: RequestHandler
 
-  beforeEach(() => {
+  beforeAll(() => {
     req = getMockReq({ body: { any: 'any' } })
     res = getMockRes().res
     next = getMockRes().next
     controller = mock()
-    sut = adaptExpressRoute(controller)
     controller.handle.mockResolvedValue({
       statusCode: 200,
       data: { data: 'ok' }
     })
+  })
+
+  beforeEach(() => {
+    sut = adaptExpressRoute(controller)
   })
 
   it('should call handle with correct request', async () => {
