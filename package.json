@@ -6,6 +6,7 @@
   "scripts": {
     "build": "rimraf ./dist && echo 'dist was deleted 😎' && tsc -p tsconfig-build.json",
     "start": "node dist/main",
+    "dev": "ts-node-dev --respawn --transpile-only -r dotenv/config src/main",
     "lint": "eslint 'src/**' --fix && echo \"ESlint: No errors found. 🚀 \"",
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "yarn test --watch",
@@ -36,6 +37,7 @@
     "pg-mem": "1.9.17",
     "supertest": "^6.3.3",
     "ts-jest": "29.1.1",
+    "ts-node-dev": "2.0.0",
     "typescript": "5.2.2"
   },
   "dependencies": {
