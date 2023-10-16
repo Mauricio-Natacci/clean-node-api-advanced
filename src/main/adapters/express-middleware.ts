@@ -13,5 +13,5 @@ export const adaptExpressMiddleware: Adapter = (middleware) => async (req, res, 
     next()
   }
 
-  res.status(statusCode).json(data)
+  res.status(statusCode).json({ error: data.message })
 }
