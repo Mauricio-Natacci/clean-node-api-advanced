@@ -3,14 +3,15 @@ export interface SaveUserPicture {
 }
 
 export namespace SaveUserPicture {
-  export type Input = { pictureUrl?: string }
+  export type Input = { pictureUrl?: string, initials?: string }
 
 }
 
 export interface LoadUserProfile {
-  load: (params: LoadUserProfile.Params) => Promise<void>
+  load: (input: LoadUserProfile.Input) => Promise<LoadUserProfile.Output>
 }
 
 export namespace LoadUserProfile {
-  export type Params = { id: string }
+  export type Input = { id: string }
+  export type Output = { name?: string }
 }
