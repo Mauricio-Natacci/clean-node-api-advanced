@@ -17,7 +17,7 @@ export class AwsS3FileStorage {
     })
   }
 
-  async upload ({ key, file }: UploadFile.Input): Promise<void> {
+  async upload ({ key, file }: UploadFile.Input): Promise<UploadFile.Output> {
     const s3 = new S3()
     await s3.putObject({
       Bucket: this.bucket,
@@ -25,6 +25,7 @@ export class AwsS3FileStorage {
       Body: file,
       ACL: 'public-read'
     }).promise()
+    return `https://${this.bucket}.s3.amazonaws.com/${encodeURIComponent(key)}`
   }
 }
 
@@ -76,5 +77,17 @@ describe('AwsS3FileStorage', () => {
     })
     expect(putObjectSpy).toHaveBeenCalledTimes(1)
     expect(putObjectPromiseSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('should return imageUrl', async () => {
+    const imageUrl = await sut.upload({ file, key })
+
+    expect(imageUrl).toBe(`https://${bucket}.s3.amazonaws.com/${key}`)
+  })
+
+  it('should return encoded imageUrl', async () => {
+    const imageUrl = await sut.upload({ file, key: 'any_key with spaces' })
+
+    expect(imageUrl).toBe(`https://${bucket}.s3.amazonaws.com/any_key%20with%20spaces`)
   })
 })
