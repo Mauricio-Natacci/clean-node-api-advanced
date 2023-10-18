@@ -90,4 +90,13 @@ describe('AwsS3FileStorage', () => {
 
     expect(imageUrl).toBe(`https://${bucket}.s3.amazonaws.com/any_key%20with%20spaces`)
   })
+
+  it('should rethrow if putObject throws', async () => {
+    const error = new Error('putObject_error')
+    putObjectPromiseSpy.mockRejectedValueOnce(error)
+
+    const promise = sut.upload({ file, key })
+
+    await expect(promise).rejects.toThrow(error)
+  })
 })
