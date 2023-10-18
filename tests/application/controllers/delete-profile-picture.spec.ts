@@ -1,11 +1,17 @@
+import { Controller } from '@/application/controllers'
+import { HttpResponse, noContent } from '@/application/helpers'
 import { ChangeProfilePicture } from '@/domain/use-cases'
 
 type HttpRequest = { userId: string }
 
-class DeleteProfilePictureController {
-  constructor (private readonly changeProfilePicture: ChangeProfilePicture) {}
-  async handle ({ userId }: HttpRequest): Promise<void> {
+export class DeleteProfilePictureController extends Controller {
+  constructor (private readonly changeProfilePicture: ChangeProfilePicture) {
+    super()
+  }
+
+  async perform ({ userId }: HttpRequest): Promise<HttpResponse> {
     await this.changeProfilePicture({ id: userId })
+    return noContent()
   }
 }
 
@@ -21,10 +27,23 @@ describe('DeleteProfilePictureController', () => {
     sut = new DeleteProfilePictureController(changeProfilePicture)
   })
 
+  it('should extend Controller', async () => {
+    expect(sut).toBeInstanceOf(Controller)
+  })
+
   it('should call ChangeProfilePicture with correct input', async () => {
     await sut.handle({ userId: 'any_user_id' })
 
     expect(changeProfilePicture).toHaveBeenCalledWith({ id: 'any_user_id' })
     expect(changeProfilePicture).toHaveBeenCalledTimes(1)
+  })
+
+  it('should return 204 on success', async () => {
+    const httpResponse = await sut.handle({ userId: 'any_user_id' })
+
+    expect(httpResponse).toEqual({
+      statusCode: 204,
+      data: null
+    })
   })
 })
