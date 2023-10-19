@@ -1,4 +1,4 @@
-import { Controller, SaveProfilePictureController } from '@/application/controllers'
+import { Controller, SavePictureController } from '@/application/controllers'
 import { AllowedMimeTypes, MaxFileSize, Required, RequiredBuffer } from '@/application/validation'
 
 describe('SaveProfilePictureController', () => {
@@ -6,7 +6,7 @@ describe('SaveProfilePictureController', () => {
   let mimeType: string
   let file: { buffer: Buffer, mimeType: string }
   let userId: string
-  let sut: SaveProfilePictureController
+  let sut: SavePictureController
   let changeProfilePicture: jest.Mock
 
   beforeAll(() => {
@@ -18,14 +18,14 @@ describe('SaveProfilePictureController', () => {
   })
 
   beforeEach(() => {
-    sut = new SaveProfilePictureController(changeProfilePicture)
+    sut = new SavePictureController(changeProfilePicture)
   })
 
   it('should extend controller', () => {
     expect(sut).toBeInstanceOf(Controller)
   })
 
-  it('should build validators correctly', () => {
+  it('should build validators correctly on save', () => {
     const validators = sut.buildValidators({ file, userId })
 
     expect(validators).toEqual([
@@ -34,6 +34,12 @@ describe('SaveProfilePictureController', () => {
       new AllowedMimeTypes(['png', 'jpg', 'jpeg'], mimeType),
       new MaxFileSize(5, buffer)
     ])
+  })
+
+  it('should build validators correctly on delete', () => {
+    const validators = sut.buildValidators({ file: undefined, userId })
+
+    expect(validators).toEqual([])
   })
 
   it('should call ChangeProfilePicture with correct input', async () => {
