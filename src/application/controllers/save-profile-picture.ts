@@ -1,3 +1,4 @@
+import { Controller } from '@/application/controllers'
 import { InvalidMimeType, MaxFileSizeError, RequiredFieldError } from '@/application/errors'
 import { HttpResponse, badRequest, ok } from '@/application/helpers'
 import { ChangeProfilePicture } from '@/domain/use-cases'
@@ -5,10 +6,12 @@ import { ChangeProfilePicture } from '@/domain/use-cases'
 type HttpRequest = { file: { buffer: Buffer, mimeType: string }, userId: string }
 type Model = { initials?: string, pictureUrl?: string } | Error
 
-export class SaveProfilePictureController {
-  constructor (private readonly changeProfilePicture: ChangeProfilePicture) {}
+export class SaveProfilePictureController extends Controller {
+  constructor (private readonly changeProfilePicture: ChangeProfilePicture) {
+    super()
+  }
 
-  async handle ({ file, userId }: HttpRequest): Promise<HttpResponse<Model>> {
+  async perform ({ file, userId }: HttpRequest): Promise<HttpResponse<Model>> {
     if (file === undefined || file === null || file.buffer.length === 0) {
       return badRequest(new RequiredFieldError('file'))
     }
