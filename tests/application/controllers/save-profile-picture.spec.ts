@@ -1,14 +1,14 @@
 import { RequiredFieldError } from '@/application/errors'
-import { HttpResponse, badRequest } from '@/application/helpers'
+import { HttpResponse, badRequest, ok } from '@/application/helpers'
 import { ChangeProfilePicture } from '@/domain/use-cases'
 
 type HttpRequest = { file: { buffer: Buffer, mimeType: string }, userId: string }
-type Model = Error
+type Model = { initials?: string, pictureUrl?: string } | Error
 
 export class SaveProfilePictureController {
   constructor (private readonly changeProfilePicture: ChangeProfilePicture) {}
 
-  async handle ({ file, userId }: HttpRequest): Promise<HttpResponse<Model> | undefined> {
+  async handle ({ file, userId }: HttpRequest): Promise<HttpResponse<Model>> {
     if (file === undefined || file === null || file.buffer.length === 0) {
       return badRequest(new RequiredFieldError('file'))
     }
@@ -23,7 +23,9 @@ export class SaveProfilePictureController {
       return badRequest(new MaxFileSizeError(5))
     }
 
-    await this.changeProfilePicture({ id: userId, file: file.buffer })
+    const data = await this.changeProfilePicture({ id: userId, file: file.buffer })
+
+    return ok(data)
   }
 }
 
@@ -54,7 +56,7 @@ describe('SaveProfilePictureController', () => {
     mimeType = 'image/png'
     file = { buffer, mimeType }
     userId = 'any_user_id'
-    changeProfilePicture = jest.fn()
+    changeProfilePicture = jest.fn().mockResolvedValue({ pictureUrl: 'any_url', initials: 'any_initials' })
   })
 
   beforeEach(() => {
@@ -126,7 +128,6 @@ describe('SaveProfilePictureController', () => {
 
   it('should return 400 if file size is bigger than 5MB', async () => {
     const invalidBuffer = Buffer.from(new Array(6 * 1024 * 1024))
-    console.log(invalidBuffer.length)
     const httpResponse = await sut.handle({ file: { buffer: invalidBuffer, mimeType: 'image/png' }, userId })
 
     expect(httpResponse).toEqual({
@@ -140,5 +141,17 @@ describe('SaveProfilePictureController', () => {
 
     expect(changeProfilePicture).toHaveBeenCalledWith({ id: userId, file: buffer })
     expect(changeProfilePicture).toHaveBeenCalledTimes(1)
+  })
+
+  it('should return 200 with valid data', async () => {
+    const httpResponse = await sut.handle({ file, userId })
+
+    expect(httpResponse).toEqual({
+      statusCode: 200,
+      data: {
+        pictureUrl: 'any_url',
+        initials: 'any_initials'
+      }
+    })
   })
 })
