@@ -3,7 +3,7 @@ import { MaxFileSize } from '@/application/validation'
 
 describe('MaxFileSize', () => {
   it('should return MaxFileSizeError if value is invalid', () => {
-    const invalidBuffer = Buffer.from(new Array(6 * 1024 * 1024))
+    const invalidBuffer = Buffer.from(new Array(5 * 1024 * 1024 + 1))
     const sut = new MaxFileSize(5, invalidBuffer)
     const error = sut.validate()
 

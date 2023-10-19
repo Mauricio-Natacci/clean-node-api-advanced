@@ -1,5 +1,5 @@
 import { Controller, SaveProfilePictureController } from '@/application/controllers'
-import { InvalidMimeTypeError, MaxFileSizeError, RequiredFieldError } from '@/application/errors'
+import { AllowedMimeTypes, MaxFileSize, Required, RequiredBuffer } from '@/application/validation'
 
 describe('SaveProfilePictureController', () => {
   let buffer: Buffer
@@ -25,77 +25,15 @@ describe('SaveProfilePictureController', () => {
     expect(sut).toBeInstanceOf(Controller)
   })
 
-  it('should return 400 if file is not provided', async () => {
-    const httpResponse = await sut.handle({ file: undefined as any, userId })
+  it('should build validators correctly', () => {
+    const validators = sut.buildValidators({ file, userId })
 
-    expect(httpResponse).toEqual({
-      statusCode: 400,
-      data: new RequiredFieldError('file')
-    })
-  })
-
-  it('should return 400 if file is not provided', async () => {
-    const httpResponse = await sut.handle({ file: null as any, userId })
-
-    expect(httpResponse).toEqual({
-      statusCode: 400,
-      data: new RequiredFieldError('file')
-    })
-  })
-
-  it('should return 400 if file is empty', async () => {
-    const httpResponse = await sut.handle({ file: { buffer: Buffer.from(''), mimeType }, userId })
-
-    expect(httpResponse).toEqual({
-      statusCode: 400,
-      data: new RequiredFieldError('file')
-    })
-  })
-
-  it('should return 400 if file type is invalid', async () => {
-    const httpResponse = await sut.handle({ file: { buffer, mimeType: 'invalid_type' }, userId })
-
-    expect(httpResponse).toEqual({
-      statusCode: 400,
-      data: new InvalidMimeTypeError(['png, jpg, jpeg'])
-    })
-  })
-
-  it('should not return 400 if file type is png', async () => {
-    const httpResponse = await sut.handle({ file: { buffer, mimeType: 'image/png' }, userId })
-
-    expect(httpResponse).not.toEqual({
-      statusCode: 400,
-      data: new InvalidMimeTypeError(['png, jpg, jpeg'])
-    })
-  })
-
-  it('should not return 400 if file type is jpg', async () => {
-    const httpResponse = await sut.handle({ file: { buffer, mimeType: 'image/jpg' }, userId })
-
-    expect(httpResponse).not.toEqual({
-      statusCode: 400,
-      data: new InvalidMimeTypeError(['png, jpg, jpeg'])
-    })
-  })
-
-  it('should not return 400 if file type is jpeg', async () => {
-    const httpResponse = await sut.handle({ file: { buffer, mimeType: 'image/jpeg' }, userId })
-
-    expect(httpResponse).not.toEqual({
-      statusCode: 400,
-      data: new InvalidMimeTypeError(['png, jpg, jpeg'])
-    })
-  })
-
-  it('should return 400 if file size is bigger than 5MB', async () => {
-    const invalidBuffer = Buffer.from(new Array(6 * 1024 * 1024))
-    const httpResponse = await sut.handle({ file: { buffer: invalidBuffer, mimeType: 'image/png' }, userId })
-
-    expect(httpResponse).toEqual({
-      statusCode: 400,
-      data: new MaxFileSizeError(5)
-    })
+    expect(validators).toEqual([
+      new Required(file, 'file'),
+      new RequiredBuffer(buffer, 'file'),
+      new AllowedMimeTypes(['png', 'jpg', 'jpeg'], mimeType),
+      new MaxFileSize(5, buffer)
+    ])
   })
 
   it('should call ChangeProfilePicture with correct input', async () => {
