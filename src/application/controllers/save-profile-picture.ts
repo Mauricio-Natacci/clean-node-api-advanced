@@ -1,5 +1,5 @@
 import { Controller } from '@/application/controllers'
-import { InvalidMimeType, MaxFileSizeError, RequiredFieldError } from '@/application/errors'
+import { InvalidMimeTypeError, MaxFileSizeError, RequiredFieldError } from '@/application/errors'
 import { HttpResponse, badRequest, ok } from '@/application/helpers'
 import { ChangeProfilePicture } from '@/domain/use-cases'
 
@@ -19,7 +19,7 @@ export class SaveProfilePictureController extends Controller {
     const allowedTypes = ['image/png', 'image/jpg', 'image/jpeg']
 
     if (!allowedTypes.includes(file.mimeType)) {
-      return badRequest(new InvalidMimeType(['png, jpg, jpeg']))
+      return badRequest(new InvalidMimeTypeError(['png, jpg, jpeg']))
     }
 
     if (file.buffer.length > 5 * 1024 * 1024) {
