@@ -1,6 +1,6 @@
 import { Controller, FacebookLoginController } from '@/application/controllers'
 import { UnauthorizedError } from '@/application/errors'
-import { RequiredStringValidator } from '@/application/validation'
+import { RequiredString } from '@/application/validation'
 import { AuthenticationError } from '@/domain/entities/errors'
 
 describe('FacebookLoginController', () => {
@@ -26,7 +26,7 @@ describe('FacebookLoginController', () => {
     const validators = sut.buildValidators({ token })
 
     expect(validators).toEqual([
-      new RequiredStringValidator(token, 'token')
+      new RequiredString(token, 'token')
     ])
   })
 
