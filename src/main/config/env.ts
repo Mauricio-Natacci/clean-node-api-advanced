@@ -12,5 +12,10 @@ export const env = {
     fb_id: process.env.FB_ID,
     fb_name: process.env.FB_NAME,
     fb_email: process.env.FB_EMAIL
+  },
+  s3: {
+    accessKey: process.env.AWS_S3_ACCESS_KEY,
+    secretKey: process.env.AWS_S3_SECRET_KEY,
+    bucket: process.env.AWS_S3_BUCKET
   }
 }
