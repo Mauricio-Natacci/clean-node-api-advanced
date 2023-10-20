@@ -32,7 +32,7 @@ describe('JwtTokenHandler', () => {
     it('should call sign with correct params', async () => {
       await sut.generate({ key, expirationInMs })
 
-      expect(fakeJwt.sign).toHaveBeenCalledWith({ key }, secret, { expiresIn: '1' })
+      expect(fakeJwt.sign).toHaveBeenCalledWith({ key }, secret, { expiresIn: 1 })
       expect(fakeJwt.sign).toHaveBeenCalledTimes(1)
     })
 

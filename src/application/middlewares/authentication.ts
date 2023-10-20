@@ -16,7 +16,8 @@ export class AuthenticationMiddleware implements Middleware {
 
     try {
       const userId = await this.authorize({ token: authorization })
-      return ok({ userId })
+      const test = ok({ userId })
+      return test
     } catch (error) {
       return forbidden()
     }

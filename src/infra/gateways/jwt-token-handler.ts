@@ -6,7 +6,7 @@ export class JwtTokenHandler implements TokenGenerator, TokenValidator {
 
   async generate ({ expirationInMs, key }: TokenGenerator.Params): Promise<TokenGenerator.Result> {
     const expirationInSeconds = expirationInMs / 1000
-    return jwt.sign({ key: 'any_key' }, this.secret, { expiresIn: `${expirationInSeconds}` })
+    return jwt.sign({ key }, this.secret, { expiresIn: expirationInSeconds })
   }
 
   async validate ({ token }: TokenValidator.Params): Promise<TokenValidator.Result> {
